@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "+NLEsM+d+gcqTl+3Ts3E1dRXT67BptiXvlxe9VfFXXE=",
+  "Source": "MedicalApp.APi",
+  "BasePath": "_content/MedicalApp.APi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
