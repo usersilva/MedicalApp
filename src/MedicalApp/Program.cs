@@ -1,4 +1,4 @@
-using MedicalApp.module.repository.services;
+using MedicalApp.module.repository.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

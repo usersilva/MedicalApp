@@ -2,7 +2,7 @@ using MedicalApp.module.repository.Models;
 using MedicalApp.module.repository.Configs;
 using Microsoft.EntityFrameworkCore;
 
-namespace MedicalApp.module.repository.services;
+namespace MedicalApp.module.repository.Services;
 
 internal class MedicalAppContext : DbContext
 {
@@ -17,6 +17,8 @@ internal class MedicalAppContext : DbContext
     public DbSet<Appointment> Appointments { get; set; }
     public DbSet<DoctorService> DoctorServices { get; set; }
     public DbSet<Service> Services { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Schedule> Schedules { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,8 @@ internal class MedicalAppContext : DbContext
         modelBuilder.ApplyConfiguration(new AppointmentConfig());
         modelBuilder.ApplyConfiguration(new DoctorServiceConfig());
         modelBuilder.ApplyConfiguration(new ServiceConfig());
+        modelBuilder.ApplyConfiguration(new ReviewConfig());
+        modelBuilder.ApplyConfiguration(new ScheduleConfig());
 
         base.OnModelCreating(modelBuilder);
     }
