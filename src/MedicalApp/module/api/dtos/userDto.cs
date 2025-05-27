@@ -7,7 +7,7 @@ internal record UserDto
     public string LastName = null!;
     public string Email = null!;
     public string PasswordHash = null!;
-
+    public string? Role;
     public MedicalRecordDto? MedicalRecord;
     public ICollection<AppointmentDto>? Appointments;
 }

@@ -7,6 +7,7 @@ internal class User
     public string LastName = null!;
     public string Email = null!;
     public string PasswordHash = null!;
+    public string? Role;
 
     public MedicalRecord? MedicalRecord;
     public ICollection<Appointment>? Appointments;

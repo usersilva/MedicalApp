@@ -18,7 +18,9 @@ internal class UserRepository : RepositoryBase<User>, IUserRepository
 
     public override async Task<User?> GetByIdAsync(int id)
     {
-        //TODO переделать реализацию
-        return await _dbSet.FindAsync(id);
+        var user = await _dbSet.FindAsync(id);
+        if (user == null)
+            throw new KeyNotFoundException($"User with ID {id} not found.");
+        return user;
     }
 }

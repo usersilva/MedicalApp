@@ -1,6 +1,6 @@
 namespace MedicalApp.module.api.dtos;
 
-internal record Schedule
+internal record ScheduleDto
 {
     public int Id;
     public int DoctorId;
