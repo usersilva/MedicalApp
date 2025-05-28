@@ -5,7 +5,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class AddReview
+public class AddReview
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IMapper _mapper;

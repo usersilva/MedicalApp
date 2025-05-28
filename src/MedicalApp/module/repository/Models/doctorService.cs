@@ -1,6 +1,6 @@
 namespace MedicalApp.module.repository.Models;
 
-internal class DoctorService
+public class DoctorService
 {
     public int DoctorId;
     public int ServiceId;

@@ -60,7 +60,7 @@ public static class DependencyInjection
                 };
             });
 
-        services.AddLocalization(options => options.ResourcesPath = "Resources");
+        services.AddLocalization(options => options.ResourcesPath = "src/MedicalApp/Resources");
 
         services.Configure<RequestLocalizationOptions>(options =>
         {
@@ -69,7 +69,7 @@ public static class DependencyInjection
                 new CultureInfo("en"),
                 new CultureInfo("ru")
             };
-            options.DefaultRequestCulture = new RequestCulture("en");
+            options.DefaultRequestCulture = new RequestCulture("ru");
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
             options.RequestCultureProviders = new List<IRequestCultureProvider>

@@ -1,6 +1,6 @@
 namespace MedicalApp.module.api.dtos;
 
-internal record ServiceDto
+public record ServiceDto
 {
     public int Id;
     public string Name = null!;

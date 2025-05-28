@@ -1,6 +1,6 @@
 namespace MedicalApp.module.repository.Models;
 
-internal class Schedule
+public class Schedule
 {
     public int Id;
     public int DoctorId;

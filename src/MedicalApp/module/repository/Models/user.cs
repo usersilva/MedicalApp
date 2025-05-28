@@ -1,6 +1,6 @@
 namespace MedicalApp.module.repository.Models;
 
-internal class User
+public class User
 {
     public int Id;
     public string Name = null!;

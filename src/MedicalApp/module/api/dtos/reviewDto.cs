@@ -1,6 +1,6 @@
 namespace MedicalApp.module.api.dtos;
 
-internal record ReviewDto
+public record ReviewDto
 {
     public int Id;
     public int PatientId;

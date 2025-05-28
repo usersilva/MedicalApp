@@ -5,7 +5,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class ViewMedicalRecord
+public class ViewMedicalRecord
 {
     private readonly IMedicalRecordRepository _medicalRecordRepository;
     private readonly IMapper _mapper;

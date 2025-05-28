@@ -5,7 +5,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class GenerateReport
+public class GenerateReport
 {
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly IMapper _mapper;

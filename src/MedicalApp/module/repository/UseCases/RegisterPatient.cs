@@ -6,7 +6,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class RegisterPatient
+public class RegisterPatient
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;

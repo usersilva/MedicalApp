@@ -1,6 +1,6 @@
 namespace MedicalApp.module.repository.Models;
 
-internal class Appointment
+public class Appointment
 {
     public int Id;
     public int UserId;

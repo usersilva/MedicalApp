@@ -1,6 +1,6 @@
 namespace MedicalApp.module.repository.Models;
 
-internal class Review
+public class Review
 {
     public int Id;
     public int PatientId;

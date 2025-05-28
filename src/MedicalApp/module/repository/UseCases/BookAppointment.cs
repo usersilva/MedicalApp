@@ -4,7 +4,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class BookAppointment
+public class BookAppointment
 {
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly IScheduleRepository _scheduleRepository;

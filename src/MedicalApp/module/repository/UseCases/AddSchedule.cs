@@ -5,7 +5,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class AddSchedule
+public class AddSchedule
 {
     private readonly IScheduleRepository _scheduleRepository;
     private readonly IMapper _mapper;

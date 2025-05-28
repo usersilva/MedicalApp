@@ -1,0 +1,16 @@
+{
+  "NoResults": "No doctors found.",
+  "RegistrationSuccessful": "Registration successful.",
+  "LoginSuccessful": "Login successful.",
+  "AppointmentBooked": "Appointment booked successfully.",
+  "ReviewAdded": "Review added successfully.",
+  "DoctorAdded": "Doctor added successfully.",
+  "ScheduleAdded": "Schedule added successfully.",
+  "InvalidCredentials": "Invalid credentials.",
+  "Unauthorized": "You are not authorized to perform this action.",
+  "SomethingWentWrong": "Something went wrong. Please try again later.",
+  "OperationCompleted": "Operation completed successfully.",
+  "InvalidInput": "Invalid input data.",
+  "NotFound": "Resource not found.",
+  "ServerError": "Internal server error."
+}

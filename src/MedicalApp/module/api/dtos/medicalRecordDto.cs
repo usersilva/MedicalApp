@@ -1,6 +1,6 @@
 namespace MedicalApp.module.api.dtos;
 
-internal record MedicalRecordDto
+public record MedicalRecordDto
 {
     public int Id;
     public int UserId;

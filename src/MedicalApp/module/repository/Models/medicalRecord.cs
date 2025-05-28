@@ -1,6 +1,6 @@
 namespace MedicalApp.module.repository.Models;
 
-internal class MedicalRecord
+public class MedicalRecord
 {
     public int Id;
     public int UserId;

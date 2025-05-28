@@ -5,7 +5,7 @@ using MedicalApp.module.repository.Interfaces;
 
 namespace MedicalApp.module.repository.UseCases;
 
-internal class FilterDoctors
+public class FilterDoctors
 {
     private readonly IDoctorRepository _doctorRepository;
     private readonly IMapper _mapper;
