@@ -7,8 +7,11 @@ namespace MedicalApp.module.repository.Repos;
 
 internal class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
 {
+    private readonly DbSet<Doctor> _dbSet;
+
     public DoctorRepository(MedicalAppContext context) : base(context)
     {
+        _dbSet = context.Set<Doctor>();
     }
 
     public async Task<List<Doctor>> GetAllAsync()
@@ -19,14 +22,14 @@ internal class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
     public async Task<List<Doctor>> SearchAsync(string query)
     {
         return await _dbSet
-            .Where(d => d.Name.Contains(query) || d.LastName.Contains(query) || d.Specialty.Contains(query))
+            .Where(d => d.Name.Contains(query) || d.LastName.Contains(query) || (d.Specialty != null && d.Specialty.Name.Contains(query)))
             .ToListAsync();
     }
 
     public async Task<List<Doctor>> FilterAsync(string specialty)
     {
         return await _dbSet
-            .Where(d => d.Specialty == specialty)
+            .Where(d => d.Specialty != null && d.Specialty.Name == specialty)
             .ToListAsync();
     }
 }

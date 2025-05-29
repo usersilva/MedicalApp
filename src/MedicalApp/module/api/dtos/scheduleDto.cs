@@ -1,12 +1,24 @@
+using System.Text.Json.Serialization;
+
 namespace MedicalApp.module.api.dtos;
 
-public record ScheduleDto
+public class ScheduleDto
 {
-    public int Id;
-    public int DoctorId;
-    public DateTime StartTime;
-    public DateTime EndTime;
-    public bool IsAvailable;
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
 
-    public DoctorDto? Doctor;
+    [JsonPropertyName("doctorId")]
+    public int DoctorId { get; set; }
+
+    [JsonPropertyName("startTime")]
+    public DateTime StartTime { get; set; }
+
+    [JsonPropertyName("endTime")]
+    public DateTime EndTime { get; set; }
+
+    [JsonPropertyName("isAvailable")]
+    public bool IsAvailable { get; set; }
+
+    [JsonPropertyName("doctor")]
+    public DoctorDto? Doctor { get; set; }
 }

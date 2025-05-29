@@ -5,6 +5,7 @@
   "AppointmentBooked": "Appointment booked successfully.",
   "ReviewAdded": "Review added successfully.",
   "DoctorAdded": "Doctor added successfully.",
+  "SpecialityAdded" : "Speciality added successfully.",
   "ScheduleAdded": "Schedule added successfully.",
   "InvalidCredentials": "Invalid credentials.",
   "Unauthorized": "You are not authorized to perform this action.",

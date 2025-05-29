@@ -1,6 +1,7 @@
 using MedicalApp.module.repository.Models;
 
 namespace MedicalApp.module.repository.Interfaces;
+
 public interface IRepository<T> where T : class
 {
     Task<T?> GetByIdAsync(int id);
@@ -8,4 +9,5 @@ public interface IRepository<T> where T : class
     Task UpdateAsync(T entity);
     Task DeleteAsync(T entity);
     Task SaveChangesAsync();
+    
 }

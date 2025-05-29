@@ -1,13 +1,27 @@
+using System.Text.Json.Serialization;
+
 namespace MedicalApp.module.api.dtos;
 
-public record AppointmentDto
+public class AppointmentDto
 {
-    public int Id;
-    public int UserId;
-    public int DoctorId;
-    public DateTime DateTime;
-    public string Status= null!;
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
 
-    public UserDto? User;
-    public DoctorDto? Doctor;
+    [JsonPropertyName("userId")]
+    public int UserId { get; set; }
+
+    [JsonPropertyName("doctorId")]
+    public int DoctorId { get; set; }
+
+    [JsonPropertyName("dateTime")]
+    public DateTime DateTime { get; set; }
+
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = null!;
+
+    [JsonPropertyName("user")]
+    public UserDto? User { get; set; }
+
+    [JsonPropertyName("doctor")]
+    public DoctorDto? Doctor { get; set; }
 }

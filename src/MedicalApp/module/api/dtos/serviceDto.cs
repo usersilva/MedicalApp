@@ -1,10 +1,18 @@
+using System.Text.Json.Serialization;
+
 namespace MedicalApp.module.api.dtos;
 
-public record ServiceDto
+public class ServiceDto
 {
-    public int Id;
-    public string Name = null!;
-    public decimal Price;
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
 
-    public ICollection<DoctorServiceDto>? DoctorServices;
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = null!;
+
+    [JsonPropertyName("price")]
+    public decimal Price { get; set; }
+
+    [JsonPropertyName("doctorServices")]
+    public ICollection<DoctorServiceDto>? DoctorServices { get; set; }
 }

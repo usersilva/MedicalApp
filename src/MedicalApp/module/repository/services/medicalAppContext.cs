@@ -19,6 +19,7 @@ internal class MedicalAppContext : DbContext
     public DbSet<Service> Services { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Schedule> Schedules { get; set; }
+    public DbSet<Speciality> Specialities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,6 +31,7 @@ internal class MedicalAppContext : DbContext
         modelBuilder.ApplyConfiguration(new ServiceConfig());
         modelBuilder.ApplyConfiguration(new ReviewConfig());
         modelBuilder.ApplyConfiguration(new ScheduleConfig());
+        modelBuilder.ApplyConfiguration(new SpecialityConfig());
 
         base.OnModelCreating(modelBuilder);
     }

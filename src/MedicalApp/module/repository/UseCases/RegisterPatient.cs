@@ -16,12 +16,14 @@ public class RegisterPatient
         _userRepository = userRepository;
         _mapper = mapper;
     }
-
+    
+    //TODO нет валидации на пустые поля
     public async Task<UserDto> ExecuteAsync(UserDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
         if (await _userRepository.GetByEmailAsync(user.Email) != null)
         {
+            //TODO 400 bad request
             throw new InvalidOperationException("Email already exists.");
         }
 

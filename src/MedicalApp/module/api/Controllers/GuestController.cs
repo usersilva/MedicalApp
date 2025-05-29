@@ -47,7 +47,7 @@ public class GuestController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserDto userDto)
+    public async Task<IActionResult> Register(UserDto userDto)
     {
         var user = await _registerPatient.ExecuteAsync(userDto);
         return Ok(new { message = _localizer["RegistrationSuccessful"].Value, user });

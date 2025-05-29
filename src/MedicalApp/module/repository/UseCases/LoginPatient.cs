@@ -31,6 +31,7 @@ public class LoginPatient
         var user = await _userRepository.GetByEmailAsync(email);
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
         {
+            //TODO 400 instead of 500
             throw new UnauthorizedAccessException(_localizer["InvalidCredentials"].Value);
         }
 

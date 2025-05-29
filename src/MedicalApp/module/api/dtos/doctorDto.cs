@@ -1,14 +1,34 @@
+using System.Text.Json.Serialization;
+
 namespace MedicalApp.module.api.dtos;
 
-public record DoctorDto
+public class DoctorDto
 {
-    public int Id;
-    public string Name = null!;
-    public string LastName = null!;
-    public string Specialty = null!;
-    public string Email = null!;
-    public bool IsAvailable = true;
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
 
-    public ICollection<AppointmentDto>? Appointments;
-    public ICollection<DoctorServiceDto>? DoctorServices;
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = null!;
+
+    [JsonPropertyName("lastName")]
+    public string LastName { get; set; } = null!;
+
+    [JsonPropertyName("specialty")]
+    public SpecialityDto speciality { get; set; } = null!;
+
+    [JsonPropertyName("specialityId")]
+    public int specialityId { get; set; }
+
+    [JsonPropertyName("email")]
+    public string Email { get; set; } = null!;
+
+    [JsonPropertyName("isAvailable")]
+    public bool IsAvailable { get; set; } = true;
+
+    [JsonPropertyName("appointments")]
+    public ICollection<AppointmentDto>? Appointments { get; set; }
+
+    [JsonPropertyName("doctorServices")]
+    public ICollection<DoctorServiceDto>? DoctorServices { get; set; }
+
 }
