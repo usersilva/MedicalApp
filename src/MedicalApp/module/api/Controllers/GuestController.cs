@@ -27,29 +27,59 @@ public class GuestController : ControllerBase
     [HttpGet("search-doctors")]
     public async Task<IActionResult> SearchDoctors(string query)
     {
-        var doctors = await _searchDoctors.ExecuteAsync(query);
-        if (!doctors.Any())
+        try
         {
-            return NotFound(new { message = _localizer["NoResults"].Value });
+            var doctors = await _searchDoctors.ExecuteAsync(query);
+            if (!doctors.Any())
+            {
+                return NotFound(new { message = _localizer["NoResults"].Value });
+            }
+            return Ok(doctors);
         }
-        return Ok(doctors);
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
+        }
     }
 
     [HttpGet("filter-doctors")]
     public async Task<IActionResult> FilterDoctors(string specialty)
     {
-        var doctors = await _filterDoctors.ExecuteAsync(specialty);
-        if (!doctors.Any())
+        try
         {
-            return NotFound(new { message = _localizer["NoResults"].Value });
+            var doctors = await _filterDoctors.ExecuteAsync(specialty);
+            if (!doctors.Any())
+            {
+                return NotFound(new { message = _localizer["NoResults"].Value });
+            }
+            return Ok(doctors);
         }
-        return Ok(doctors);
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
+        }
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserDto userDto)
     {
-        var user = await _registerPatient.ExecuteAsync(userDto);
-        return Ok(new { message = _localizer["RegistrationSuccessful"].Value, user });
+        try
+        {
+            if (userDto == null || string.IsNullOrWhiteSpace(userDto.Name) || string.IsNullOrWhiteSpace(userDto.LastName) ||
+                string.IsNullOrWhiteSpace(userDto.Email) || string.IsNullOrWhiteSpace(userDto.PasswordHash))
+            {
+                return BadRequest(new { message = _localizer["AllFieldsRequired"].Value });
+            }
+            var user = await _registerPatient.ExecuteAsync(userDto);
+            if (user is IDictionary<string, object> errorResult && errorResult.ContainsKey("message"))
+            {
+                return BadRequest(new { message = errorResult["message"]?.ToString() });
+            }
+            return Ok(new { message = _localizer["RegistrationSuccessful"].Value, user });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
+        }
     }
 }

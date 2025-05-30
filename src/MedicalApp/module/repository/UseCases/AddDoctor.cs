@@ -2,6 +2,7 @@ using AutoMapper;
 using MedicalApp.module.api.dtos;
 using MedicalApp.module.repository.Interfaces;
 using MedicalApp.module.repository.Models;
+using MedicalApp.module.repository.Services;
 
 namespace MedicalApp.module.repository.UseCases;
 
@@ -9,27 +10,31 @@ public class AddDoctor
 {
     private readonly IDoctorRepository _doctorRepository;
     private readonly IMapper _mapper;
-    private readonly ISpecialityRepository _specialityRepository;
+    private readonly SpecialityResolver _specialityResolver;
 
-    public AddDoctor(IDoctorRepository doctorRepository, IMapper mapper, ISpecialityRepository specialityRepository)
+    public AddDoctor(IDoctorRepository doctorRepository, IMapper mapper, SpecialityResolver specialityResolver)
     {
         _doctorRepository = doctorRepository;
         _mapper = mapper;
-        _specialityRepository = specialityRepository;
+        _specialityResolver = specialityResolver;
     }
 
     public async Task<DoctorDto> ExecuteAsync(DoctorDto doctorDto)
     {
         if (doctorDto.speciality != null && !string.IsNullOrWhiteSpace(doctorDto.speciality.Name))
         {
-            var specialty = await _specialityRepository.GetByNameAsync(doctorDto.speciality.Name) 
-                ?? new Speciality { Name = doctorDto.speciality.Name };
-            if (specialty.Id == 0) await _specialityRepository.AddAsync(specialty);
-            doctorDto.speciality.Id = specialty.Id;
+            var specialtyId = await _specialityResolver.ResolveSpecialtyId(doctorDto.speciality);
+            doctorDto.speciality.Id = specialtyId;
         }
 
         var doctor = _mapper.Map<Doctor>(doctorDto);
+        if (doctorDto.speciality != null)
+        {
+            doctor.SpecialityId = doctorDto.speciality.Id;
+        }
+
         await _doctorRepository.AddAsync(doctor);
+        await _doctorRepository.SaveChangesAsync();
         return _mapper.Map<DoctorDto>(doctor);
     }
 }

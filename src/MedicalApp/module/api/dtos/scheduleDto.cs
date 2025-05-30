@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace MedicalApp.module.api.dtos;
 
-public class ScheduleDto
+public record ScheduleDto
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }

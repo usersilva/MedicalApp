@@ -6,30 +6,44 @@ namespace MedicalApp.module.repository.Configs;
 
 internal class MedicalRecordConfig : IEntityTypeConfiguration<MedicalRecord>
 {
-    public void Configure(EntityTypeBuilder<MedicalRecord> builder)
+public void Configure(EntityTypeBuilder<MedicalRecord> builder)
     {
         builder.HasKey(m => m.Id);
 
         builder.Property(m => m.UserId)
-               .IsRequired();
-
-        builder.Property(m => m.CreationDate)
-               .IsRequired();
-
-        builder.Property(m => m.Diagnosis)
                .IsRequired()
-               .HasMaxLength(500);
+               .ValueGeneratedNever();
 
-        builder.Property(m => m.IsActive)
+        builder.Property(m => m.ChronicDiseases)
+               .HasMaxLength(1000)
                .IsRequired()
-               .HasDefaultValue(false);
+               .HasDefaultValue("Нет данных");
 
-        builder.HasIndex(m => m.Id)
-               .IsUnique();
+        builder.Property(m => m.CurrentCondition)
+               .HasMaxLength(500)
+               .IsRequired()
+               .HasDefaultValue("Нет данных");
+
+        builder.Property(m => m.Recommendations)
+               .HasMaxLength(1000)
+               .IsRequired()
+               .HasDefaultValue("Нет данных");
+
+        builder.Property(m => m.LastUpdated)
+               .IsRequired()
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.HasOne(m => m.User)
                .WithOne(u => u.MedicalRecord)
                .HasForeignKey<MedicalRecord>(m => m.UserId)
                .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(m => m.Appointments)
+               .WithOne(a => a.MedicalRecord)
+               .HasForeignKey(a => a.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(m => m.UserId)
+               .IsUnique();
     }
 }

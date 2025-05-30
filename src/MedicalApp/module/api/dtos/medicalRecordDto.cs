@@ -2,23 +2,20 @@ using System.Text.Json.Serialization;
 
 namespace MedicalApp.module.api.dtos;
 
-public class MedicalRecordDto
+public record MedicalRecordDto
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
-
+    public int Id { get; init; }
     [JsonPropertyName("userId")]
-    public int UserId { get; set; }
-
-    [JsonPropertyName("creationDate")]
-    public DateTime CreationDate { get; set; }
-
-    [JsonPropertyName("diagnosis")]
-    public string Diagnosis { get; set; } = null!;
-
-    [JsonPropertyName("isActive")]
-    public bool IsActive { get; set; } = false;
-
-    [JsonPropertyName("user")]
-    public UserDto? User { get; set; }
+    public int UserId { get; init; }
+    [JsonPropertyName("chronicDiseases")]
+    public string ChronicDiseases { get; init; }
+    [JsonPropertyName("currentCondition")]
+    public string CurrentCondition { get; init; }
+    [JsonPropertyName("recommendations")]
+    public string Recommendations { get; init; }
+    [JsonPropertyName("lastUpdated")]
+    public DateTime LastUpdated { get; init; }
+    [JsonPropertyName("appointments")]
+    public ICollection<AppointmentDto> Appointments { get; init; }
 }

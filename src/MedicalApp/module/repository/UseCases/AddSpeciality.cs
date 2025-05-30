@@ -20,6 +20,7 @@ public class AddSpeciality
     {
         var speciality = _mapper.Map<Speciality>(specialityDto);
         await _specialityRepository.AddAsync(speciality);
+        await _specialityRepository.SaveChangesAsync();
         return _mapper.Map<SpecialityDto>(speciality);
     }
 }

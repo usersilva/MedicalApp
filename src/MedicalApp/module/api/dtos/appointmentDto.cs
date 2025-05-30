@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace MedicalApp.module.api.dtos;
 
-public class AppointmentDto
+public record AppointmentDto
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -24,4 +24,5 @@ public class AppointmentDto
 
     [JsonPropertyName("doctor")]
     public DoctorDto? Doctor { get; set; }
+    public MedicalRecordDto MedicalRecord { get; set; }
 }

@@ -14,7 +14,8 @@ public record UserDto
     public string Email { get; init; }
     [JsonPropertyName("passwordHash")]
     public string PasswordHash { get; init; }
-    public string? Role;
+    [JsonPropertyName("role")]
+    public string? Role { get; init; }
     public MedicalRecordDto? MedicalRecord;
     public ICollection<AppointmentDto>? Appointments;
 }

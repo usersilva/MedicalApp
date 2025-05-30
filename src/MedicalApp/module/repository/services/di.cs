@@ -42,8 +42,12 @@ public static class DependencyInjection
         services.AddScoped<AddDoctor>();
         services.AddScoped<GenerateReport>();
         services.AddScoped<AddSchedule>();
+        services.AddScoped<GetAllSpecialities>();
+        services.AddScoped<AddSpeciality>();
+        services.AddScoped<SpecialityResolver>();
+        services.AddScoped<UpdateMedicalRecord>();
 
-        services.AddAutoMapper(typeof(DependencyInjection));
+        services.AddAutoMapper(typeof(DependencyInjection)); 
 
         var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -15,4 +15,8 @@ internal class MedicalRecordRepository : RepositoryBase<MedicalRecord>, IMedical
     {
         return await _dbSet.FirstOrDefaultAsync(m => m.UserId == userId);
     }
+    public async Task<int> GetAppointmentCountAsync(int userId)
+    {
+        return await _context.Appointments.CountAsync(a => a.UserId == userId);
+    }
 }

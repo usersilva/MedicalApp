@@ -22,7 +22,7 @@ internal class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
     public async Task<List<Doctor>> SearchAsync(string query)
     {
         return await _dbSet
-            .Where(d => d.Name.Contains(query) || d.LastName.Contains(query) || (d.Specialty != null && d.Specialty.Name.Contains(query)))
+            .Where(d => d.LastName.Contains(query) || d.LastName.Contains(query) || (d.Specialty != null && d.Specialty.Name.Contains(query)))
             .ToListAsync();
     }
 

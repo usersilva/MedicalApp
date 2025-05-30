@@ -31,9 +31,9 @@ public class LoginPatient
         var user = await _userRepository.GetByEmailAsync(email);
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
         {
-            //TODO 400 instead of 500
             throw new UnauthorizedAccessException(_localizer["InvalidCredentials"].Value);
         }
+        //TODO сделать вшивку в хедеры запросов
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);

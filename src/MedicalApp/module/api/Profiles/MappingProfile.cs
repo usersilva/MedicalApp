@@ -1,6 +1,7 @@
 using AutoMapper;
 using MedicalApp.module.api.dtos;
 using MedicalApp.module.repository.Models;
+using MedicalApp.module.repository.Services;
 using MedicalApp.module.repository.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -8,12 +9,9 @@ namespace MedicalApp.module.api.Profiles;
 
 public class MappingProfile : Profile
 {
-    private readonly ISpecialityRepository _specialtyRepository;
 
-    public MappingProfile(ISpecialityRepository specialtyRepository)
+    public MappingProfile()
     {
-        _specialtyRepository = specialtyRepository;
-
         CreateMap<User, UserDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -46,7 +44,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
             .ForMember(dest => dest.speciality, opt => opt.MapFrom(src => src.Specialty != null ? new SpecialityDto { Id = src.Specialty.Id, Name = src.Specialty.Name } : null))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src => src.IsAvailable))
             .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => src.Appointments))
             .ForMember(dest => dest.DoctorServices, opt => opt.MapFrom(src => src.DoctorServices));
 
@@ -55,9 +52,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
             .ForMember(dest => dest.Specialty, opt => opt.Ignore())
-            .ForMember(dest => dest.SpecialityId, opt => opt.MapFrom(src => src.speciality != null ? ResolveSpecialityId(src.speciality).GetAwaiter().GetResult() : 0))
+            .ForMember(dest => dest.SpecialityId, opt => opt.Ignore())
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src => src.IsAvailable))
             .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => src.Appointments))
             .ForMember(dest => dest.DoctorServices, opt => opt.MapFrom(src => src.DoctorServices));
 
@@ -112,18 +108,21 @@ public class MappingProfile : Profile
         CreateMap<MedicalRecord, MedicalRecordDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-            .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => src.CreationDate))
-            .ForMember(dest => dest.Diagnosis, opt => opt.MapFrom(src => src.Diagnosis))
-            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
+            .ForMember(dest => dest.ChronicDiseases, opt => opt.MapFrom(src => src.ChronicDiseases))
+            .ForMember(dest => dest.CurrentCondition, opt => opt.MapFrom(src => src.CurrentCondition))
+            .ForMember(dest => dest.Recommendations, opt => opt.MapFrom(src => src.Recommendations))
+            .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => src.LastUpdated))
+            .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => src.Appointments));
 
         CreateMap<MedicalRecordDto, MedicalRecord>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-            .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => src.CreationDate))
-            .ForMember(dest => dest.Diagnosis, opt => opt.MapFrom(src => src.Diagnosis))
-            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-            .ForMember(dest => dest.User, opt => opt.Ignore());
+            .ForMember(dest => dest.ChronicDiseases, opt => opt.MapFrom(src => src.ChronicDiseases))
+            .ForMember(dest => dest.CurrentCondition, opt => opt.MapFrom(src => src.CurrentCondition))
+            .ForMember(dest => dest.Recommendations, opt => opt.MapFrom(src => src.Recommendations))
+            .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => src.LastUpdated))
+            .ForMember(dest => dest.User, opt => opt.Ignore())
+            .ForMember(dest => dest.Appointments, opt => opt.Ignore());
 
         CreateMap<DoctorService, DoctorServiceDto>()
             .ForMember(dest => dest.DoctorId, opt => opt.MapFrom(src => src.DoctorId))
@@ -154,23 +153,5 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.User, opt => opt.Ignore())
             .ForMember(dest => dest.Doctor, opt => opt.Ignore());
-    }
-
-    //TODO вынести в нормальный вид
-    private async Task<int> ResolveSpecialityId(SpecialityDto specialityDto)
-    {
-        if (specialityDto == null || string.IsNullOrWhiteSpace(specialityDto.Name))
-        {
-            throw new ArgumentException("Specialty name cannot be empty.");
-        }
-
-        var specialty = await _specialtyRepository.GetByNameAsync(specialityDto.Name);
-        if (specialty == null)
-        {
-            specialty = new Speciality { Name = specialityDto.Name };
-            await _specialtyRepository.AddAsync(specialty);
-        }
-
-        return specialty.Id;
     }
 }

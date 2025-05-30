@@ -13,5 +13,6 @@
   "OperationCompleted": "Operation completed successfully.",
   "InvalidInput": "Invalid input data.",
   "NotFound": "Resource not found.",
-  "ServerError": "Internal server error."
+  "ServerError": "Internal server error.",
+  "No data": "No actual data."
 }

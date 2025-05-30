@@ -17,7 +17,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseRequestLocalization();
 app.UseAuthentication();
 app.UseAuthorization(); 
