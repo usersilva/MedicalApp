@@ -5,6 +5,7 @@ using MedicalApp.module.repository.Interfaces;
 using SendGrid.Helpers.Errors.Model;
 
 namespace MedicalApp.module.repository.UseCases;
+
 public class UpdateMedicalRecord
 {
     private readonly IMedicalRecordRepository _medicalRecordRepository;
@@ -26,13 +27,6 @@ public class UpdateMedicalRecord
         {
             _logger.LogWarning("Medical record for user {UserId} not found.", userId);
             throw new NotFoundException($"Medical record for user {userId} not found.");
-        }
-
-        var appointmentCount = await _medicalRecordRepository.GetAppointmentCountAsync(userId);
-        if (appointmentCount == 0)
-        {
-            _logger.LogWarning("Cannot update medical record for user {UserId}: No appointments found.", userId);
-            throw new InvalidOperationException("Cannot update medical record: User has no appointments.");
         }
 
         record.ChronicDiseases = updatedRecordDto.ChronicDiseases ?? record.ChronicDiseases;

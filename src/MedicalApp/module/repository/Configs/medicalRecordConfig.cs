@@ -38,11 +38,6 @@ public void Configure(EntityTypeBuilder<MedicalRecord> builder)
                .HasForeignKey<MedicalRecord>(m => m.UserId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(m => m.Appointments)
-               .WithOne(a => a.MedicalRecord)
-               .HasForeignKey(a => a.UserId)
-               .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasIndex(m => m.UserId)
                .IsUnique();
     }

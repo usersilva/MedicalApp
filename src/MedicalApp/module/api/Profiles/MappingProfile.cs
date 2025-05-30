@@ -111,8 +111,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ChronicDiseases, opt => opt.MapFrom(src => src.ChronicDiseases))
             .ForMember(dest => dest.CurrentCondition, opt => opt.MapFrom(src => src.CurrentCondition))
             .ForMember(dest => dest.Recommendations, opt => opt.MapFrom(src => src.Recommendations))
-            .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => src.LastUpdated))
-            .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => src.Appointments));
+            .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => src.LastUpdated));
 
         CreateMap<MedicalRecordDto, MedicalRecord>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -121,8 +120,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CurrentCondition, opt => opt.MapFrom(src => src.CurrentCondition))
             .ForMember(dest => dest.Recommendations, opt => opt.MapFrom(src => src.Recommendations))
             .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => src.LastUpdated))
-            .ForMember(dest => dest.User, opt => opt.Ignore())
-            .ForMember(dest => dest.Appointments, opt => opt.Ignore());
+            .ForMember(dest => dest.User, opt => opt.Ignore());
 
         CreateMap<DoctorService, DoctorServiceDto>()
             .ForMember(dest => dest.DoctorId, opt => opt.MapFrom(src => src.DoctorId))

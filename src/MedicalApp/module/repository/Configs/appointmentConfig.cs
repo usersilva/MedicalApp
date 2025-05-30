@@ -33,10 +33,5 @@ internal class AppointmentConfig : IEntityTypeConfiguration<Appointment>
                      .WithMany(d => d.Appointments)
                      .HasForeignKey(a => a.DoctorId)
                      .OnDelete(DeleteBehavior.Restrict);
-
-              builder.HasOne(a => a.MedicalRecord)
-                     .WithMany(m => m.Appointments)
-                     .HasForeignKey(a => a.UserId)
-                     .OnDelete(DeleteBehavior.Cascade);
        }
 }

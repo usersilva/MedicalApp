@@ -9,5 +9,4 @@ public class MedicalRecord
     public string Recommendations { get; set; }
     public DateTime LastUpdated { get; set; }
     public User User { get; set; }
-    public ICollection<Appointment> Appointments { get; set; }
 }

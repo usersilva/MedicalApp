@@ -16,6 +16,4 @@ public record MedicalRecordDto
     public string Recommendations { get; init; }
     [JsonPropertyName("lastUpdated")]
     public DateTime LastUpdated { get; init; }
-    [JsonPropertyName("appointments")]
-    public ICollection<AppointmentDto> Appointments { get; init; }
 }

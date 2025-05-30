@@ -21,6 +21,16 @@ public class AddDoctor
 
     public async Task<DoctorDto> ExecuteAsync(DoctorDto doctorDto)
     {
+        if (string.IsNullOrWhiteSpace(doctorDto.Email))
+        {
+            throw new ArgumentException("EmailRequired");
+        }
+
+        var existingDoctor = await _doctorRepository.GetByEmailAsync(doctorDto.Email);
+        if (existingDoctor != null)
+        {
+            throw new InvalidOperationException("EmailAlreadyExists");
+        }
         if (doctorDto.speciality != null && !string.IsNullOrWhiteSpace(doctorDto.speciality.Name))
         {
             var specialtyId = await _specialityResolver.ResolveSpecialtyId(doctorDto.speciality);

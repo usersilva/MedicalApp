@@ -32,4 +32,9 @@ internal class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
             .Where(d => d.Specialty != null && d.Specialty.Name == specialty)
             .ToListAsync();
     }
+
+    public async Task<Doctor?> GetByEmailAsync(string email)
+    {
+        return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
+    }
 }

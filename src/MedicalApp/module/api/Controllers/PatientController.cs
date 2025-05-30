@@ -43,26 +43,17 @@ public class PatientController : ControllerBase
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(request?.Email) || string.IsNullOrWhiteSpace(request?.Password))
-            {
-                return BadRequest(new { message = _localizer["AllFieldsRequired"].Value });
-            }
-
-            var result = await _loginPatient.ExecuteAsync(request.Email, request.Password);
-            if (result is BadRequestObjectResult badRequest)
-            {
-                return BadRequest(new { message = badRequest.Value?.ToString() });
-            }
-            var token = ((IDictionary<string, object>)result)["Token"]?.ToString();
-            if (string.IsNullOrEmpty(token))
-            {
-                return StatusCode(500, new { message = _localizer["TokenGenerationFailed"].Value });
-            }
-
+            var (token, user) = await _loginPatient.ExecuteAsync(request.Email, request.Password);
             Response.Headers["Authorization"] = $"Bearer {token}";
-            
-            var user = ((IDictionary<string, object>)result)["User"] as UserDto;
             return Ok(new { message = _localizer["LoginSuccessful"].Value, User = user });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
         catch (Exception ex)
         {

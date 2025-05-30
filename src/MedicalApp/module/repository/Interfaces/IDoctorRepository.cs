@@ -7,4 +7,5 @@ public interface IDoctorRepository : IRepository<Doctor>
     Task<List<Doctor>> GetAllAsync();
     Task<List<Doctor>> SearchAsync(string query);
     Task<List<Doctor>> FilterAsync(string specialty);
+    Task<Doctor?> GetByEmailAsync(string email);
 }

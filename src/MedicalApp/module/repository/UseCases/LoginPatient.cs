@@ -26,14 +26,18 @@ public class LoginPatient
         _localizer = localizer;
     }
 
-    public async Task<object> ExecuteAsync(string email, string password)
+    public async Task<(string Token, UserDto User)> ExecuteAsync(string email, string password)
     {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException(_localizer["AllFieldsRequired"].Value);
+        }
+
         var user = await _userRepository.GetByEmailAsync(email);
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
         {
             throw new UnauthorizedAccessException(_localizer["InvalidCredentials"].Value);
         }
-        //TODO сделать вшивку в хедеры запросов
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
@@ -55,6 +59,6 @@ public class LoginPatient
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
 
-        return new { Token = tokenString, User = _mapper.Map<UserDto>(user) };
+        return (tokenString, _mapper.Map<UserDto>(user));
     }
 }

@@ -17,12 +17,11 @@ public record AppointmentDto
     public DateTime DateTime { get; set; }
 
     [JsonPropertyName("status")]
-    public string Status { get; set; } = null!;
+    public string Status { get; set; }
 
     [JsonPropertyName("user")]
     public UserDto? User { get; set; }
 
     [JsonPropertyName("doctor")]
     public DoctorDto? Doctor { get; set; }
-    public MedicalRecordDto MedicalRecord { get; set; }
 }

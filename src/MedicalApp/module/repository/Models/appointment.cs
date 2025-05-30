@@ -10,5 +10,4 @@ public class Appointment
 
     public User? User;
     public Doctor? Doctor;
-    public MedicalRecord MedicalRecord;
 }
