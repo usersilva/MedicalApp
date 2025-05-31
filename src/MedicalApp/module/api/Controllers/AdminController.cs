@@ -23,6 +23,10 @@ public class AdminController : ControllerBase
     private readonly IStringLocalizer<AdminController> _localizer;
     private readonly SpecialityResolver _specialityResolver;
     private readonly UpdateMedicalRecord _updateMedicalRecord;
+    private readonly AddService _addService;
+    private readonly GetAllServices _getAllServices;
+    private readonly SearchServicesByName _searchServicesByName;
+    private readonly GetServiceById _getServiceById;
 
     public AdminController(AddDoctor addDoctor, GenerateReport generateReport,
                             AddSchedule addSchedule, LoginPatient loginAdmin,
@@ -30,7 +34,11 @@ public class AdminController : ControllerBase
                             AddSpeciality addSpeciality,
                             SpecialityResolver specialityResolver,
                             IStringLocalizer<AdminController> localizer,
-                            UpdateMedicalRecord updateMedicalRecord)
+                            UpdateMedicalRecord updateMedicalRecord,
+                            AddService addService,
+                            GetAllServices getAllServices,
+                            SearchServicesByName searchServicesByName,
+                            GetServiceById getServiceById)
     {
         _addDoctor = addDoctor;
         _generateReport = generateReport;
@@ -41,6 +49,70 @@ public class AdminController : ControllerBase
         _specialityResolver = specialityResolver;
         _localizer = localizer;
         _updateMedicalRecord = updateMedicalRecord;
+        _addService = addService;
+        _getAllServices = getAllServices;
+        _searchServicesByName = searchServicesByName;
+        _getServiceById = getServiceById;
+    }
+
+    [HttpPost("add-service")]
+    public async Task<IActionResult> AddService([FromBody] ServiceDto service)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        try
+        {
+            var addedService = await _addService.ExecuteAsync(service);
+            return CreatedAtAction(nameof(GetService), new { id = addedService.Id }, addedService);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("services")]
+    public async Task<IActionResult> GetAllServices()
+    {
+        try
+        {
+            var services = await _getAllServices.ExecuteAsync();
+            return Ok(services);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+    [HttpGet("search-services")]
+    public async Task<IActionResult> SearchServices([FromQuery] string name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return BadRequest(new { message = "Service name could not be empty." });
+
+        try
+        {
+            var services = await _searchServicesByName.ExecuteAsync(name);
+            return Ok(services);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("services/{id}")]
+    public async Task<IActionResult> GetService(int id)
+    {
+        try
+        {
+            var service = await _getServiceById.ExecuteAsync(id);
+            if (service == null) return NotFound(new { message = "Service not found." });
+            return Ok(service);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost("add-speciality")]
@@ -83,16 +155,6 @@ public class AdminController : ControllerBase
             if (doctorDto == null || string.IsNullOrWhiteSpace(doctorDto.Name) || string.IsNullOrWhiteSpace(doctorDto.Email))
             {
                 return BadRequest(new { message = _localizer["InvalidDoctorData"].Value });
-            }
-
-            if (doctorDto.speciality != null && !string.IsNullOrWhiteSpace(doctorDto.speciality.Name))
-            {
-                var specialtyId = await _specialityResolver.ResolveSpecialtyId(doctorDto.speciality);
-                if (specialtyId == 0)
-                {
-                    return BadRequest(new { message = _localizer["SpecialtyNotResolved"].Value });
-                }
-                doctorDto.speciality.Id = specialtyId;
             }
 
             var addedDoctor = await _addDoctor.ExecuteAsync(doctorDto);

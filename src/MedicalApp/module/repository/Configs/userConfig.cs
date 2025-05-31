@@ -34,13 +34,18 @@ internal class UserConfig : IEntityTypeConfiguration<User>
                      .IsUnique();
 
               builder.HasOne(u => u.MedicalRecord)
-                     .WithOne(m => m.User)
-                     .HasForeignKey<MedicalRecord>(m => m.UserId)
+                     .WithOne(mr => mr.User)
+                     .HasForeignKey<MedicalRecord>(mr => mr.UserId)
                      .OnDelete(DeleteBehavior.Cascade);
 
               builder.HasMany(u => u.Appointments)
                      .WithOne(a => a.User)
                      .HasForeignKey(a => a.UserId)
+                     .OnDelete(DeleteBehavior.Cascade);
+
+              builder.HasMany<Review>()
+                     .WithOne(r => r.Patient)
+                     .HasForeignKey(r => r.PatientId)
                      .OnDelete(DeleteBehavior.Cascade);
        }
 }

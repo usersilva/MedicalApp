@@ -18,21 +18,10 @@ internal class DoctorConfig : IEntityTypeConfiguration<Doctor>
                      .IsRequired()
                      .HasMaxLength(50);
 
-              builder.HasOne(d => d.Specialty)
+              builder.HasOne(d => d.Speciality)
                      .WithMany(s => s.Doctors)
                      .HasForeignKey(d => d.SpecialityId)
                      .OnDelete(DeleteBehavior.Restrict);
-
-              builder.Property(d => d.Email)
-                     .IsRequired()
-                     .HasMaxLength(100);
-
-              builder.Property(d => d.IsAvailable)
-                     .IsRequired()
-                     .HasDefaultValue(true);
-
-              builder.HasIndex(d => d.Email)
-                     .IsUnique();
 
               builder.HasMany(d => d.Appointments)
                      .WithOne(a => a.Doctor)
@@ -42,6 +31,16 @@ internal class DoctorConfig : IEntityTypeConfiguration<Doctor>
               builder.HasMany(d => d.DoctorServices)
                      .WithOne(ds => ds.Doctor)
                      .HasForeignKey(ds => ds.DoctorId)
+                     .OnDelete(DeleteBehavior.Cascade);
+
+              builder.HasMany(d => d.Schedules)
+                     .WithOne(s => s.Doctor)
+                     .HasForeignKey(s => s.DoctorId)
+                     .OnDelete(DeleteBehavior.Cascade);
+
+              builder.HasMany(d => d.Reviews)
+                     .WithOne(r => r.Doctor)
+                     .HasForeignKey(r => r.DoctorId)
                      .OnDelete(DeleteBehavior.Cascade);
        }
 }

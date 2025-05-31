@@ -21,30 +21,25 @@ public class AddDoctor
 
     public async Task<DoctorDto> ExecuteAsync(DoctorDto doctorDto)
     {
+        if (doctorDto == null)
+            throw new ArgumentNullException(nameof(doctorDto));
+        if (string.IsNullOrWhiteSpace(doctorDto.Name))
+            throw new ArgumentException("Имя доктора не может быть пустым.", nameof(doctorDto.Name));
         if (string.IsNullOrWhiteSpace(doctorDto.Email))
-        {
-            throw new ArgumentException("EmailRequired");
-        }
+            throw new ArgumentException("EmailRequired", nameof(doctorDto.Email));
 
         var existingDoctor = await _doctorRepository.GetByEmailAsync(doctorDto.Email);
         if (existingDoctor != null)
-        {
             throw new InvalidOperationException("EmailAlreadyExists");
-        }
-        if (doctorDto.speciality != null && !string.IsNullOrWhiteSpace(doctorDto.speciality.Name))
-        {
-            var specialtyId = await _specialityResolver.ResolveSpecialtyId(doctorDto.speciality);
-            doctorDto.speciality.Id = specialtyId;
-        }
+
+        int specialityId = doctorDto.SpecialityId ?? await _specialityResolver.ResolveSpecialtyId(new SpecialityDto { Name = doctorDto.Name });
 
         var doctor = _mapper.Map<Doctor>(doctorDto);
-        if (doctorDto.speciality != null)
-        {
-            doctor.SpecialityId = doctorDto.speciality.Id;
-        }
-
+        doctor.SpecialityId = specialityId;
         await _doctorRepository.AddAsync(doctor);
         await _doctorRepository.SaveChangesAsync();
-        return _mapper.Map<DoctorDto>(doctor);
+
+        var addedDoctor = await _doctorRepository.GetByIdAsync(doctor.Id);
+        return _mapper.Map<DoctorDto>(addedDoctor);
     }
 }

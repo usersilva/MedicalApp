@@ -9,6 +9,6 @@ public class User
     public string PasswordHash = null!;
     public string? Role;
 
-    public MedicalRecord? MedicalRecord;
-    public ICollection<Appointment>? Appointments;
+    public MedicalRecord? MedicalRecord { get; set; }
+    public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }

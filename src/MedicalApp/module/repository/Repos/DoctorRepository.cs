@@ -13,23 +13,27 @@ internal class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
     {
         _dbSet = context.Set<Doctor>();
     }
+    public MedicalAppContext Context => (MedicalAppContext)base._context;
 
     public async Task<List<Doctor>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
 
-    public async Task<List<Doctor>> SearchAsync(string query)
+public async Task<List<Doctor>> SearchAsync(string query)
     {
         return await _dbSet
-            .Where(d => d.LastName.Contains(query) || d.LastName.Contains(query) || (d.Specialty != null && d.Specialty.Name.Contains(query)))
-            .ToListAsync();
+            .Where(d => !string.IsNullOrEmpty(query) &&
+                       (d.Name.Contains(query) || d.LastName.Contains(query) ||
+                        (d.Speciality != null && d.Speciality.Name.Contains(query))))
+            .ToListAsync(); 
     }
 
     public async Task<List<Doctor>> FilterAsync(string specialty)
     {
         return await _dbSet
-            .Where(d => d.Specialty != null && d.Specialty.Name == specialty)
+            .Where(d => !string.IsNullOrEmpty(specialty) &&
+                       d.Speciality != null && d.Speciality.Name == specialty)
             .ToListAsync();
     }
 

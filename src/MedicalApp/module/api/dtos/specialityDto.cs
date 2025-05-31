@@ -9,7 +9,4 @@ public record SpecialityDto
 
     [JsonPropertyName("name")]
     public string Name { get; set; }
-
-    [JsonPropertyName("doctors")]
-    public List<DoctorDto> Doctors { get; set; } = new();
 }

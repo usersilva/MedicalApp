@@ -13,6 +13,6 @@ public record ServiceDto
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
 
-    [JsonPropertyName("doctorServices")]
-    public ICollection<DoctorServiceDto>? DoctorServices { get; set; }
+    [JsonPropertyName("doctorIds")]
+    public ICollection<int>? DoctorIds { get; set; }
 }

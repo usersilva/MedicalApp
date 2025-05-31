@@ -21,11 +21,17 @@ public class PatientController : ControllerBase
     private readonly SearchDoctors _searchDoctors;
     private readonly FilterDoctors _filterDoctors;
     private readonly IStringLocalizer<SharedResources> _localizer;
+    private readonly GetAllServices _getAllServices;
+    private readonly SearchServicesByName _searchServicesByName;
+    private readonly GetServiceById _getServiceById;
 
     public PatientController(LoginPatient loginPatient, ViewMedicalRecord viewMedicalRecord,
                               ViewAppointments viewAppointments, BookAppointment bookAppointment,
                               AddReview addReview, SearchDoctors searchDoctors, FilterDoctors filterDoctors,
-                              IStringLocalizer<SharedResources> localizer)
+                              IStringLocalizer<SharedResources> localizer,
+                              GetAllServices getAllServices,
+                              SearchServicesByName searchServicesByName,
+                              GetServiceById getServiceById)
     {
         _loginPatient = loginPatient;
         _viewMedicalRecord = viewMedicalRecord;
@@ -34,6 +40,9 @@ public class PatientController : ControllerBase
         _addReview = addReview;
         _searchDoctors = searchDoctors;
         _filterDoctors = filterDoctors;
+        _getAllServices = getAllServices;
+        _searchServicesByName = searchServicesByName;
+        _getServiceById = getServiceById;
         _localizer = localizer;
     }
 
@@ -160,6 +169,49 @@ public class PatientController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
+        }
+    }
+    [HttpGet("services")]
+    public async Task<IActionResult> GetAllServices()
+    {
+        try
+        {
+            var services = await _getAllServices.ExecuteAsync();
+            return Ok(services);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+    [HttpGet("search-services")]
+    public async Task<IActionResult> SearchServices([FromQuery] string name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return BadRequest(new { message = "Service name could not be empty." });
+
+        try
+        {
+            var services = await _searchServicesByName.ExecuteAsync(name);
+            return Ok(services);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("services/{id}")]
+    public async Task<IActionResult> GetService(int id)
+    {
+        try
+        {
+            var service = await _getServiceById.ExecuteAsync(id);
+            if (service == null) return NotFound(new { message = "Service not found." });
+            return Ok(service);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 }

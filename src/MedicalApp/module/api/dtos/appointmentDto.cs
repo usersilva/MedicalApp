@@ -7,9 +7,6 @@ public record AppointmentDto
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("userId")]
-    public int UserId { get; set; }
-
     [JsonPropertyName("doctorId")]
     public int DoctorId { get; set; }
 
@@ -19,9 +16,6 @@ public record AppointmentDto
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
-    [JsonPropertyName("user")]
-    public UserDto? User { get; set; }
-
-    [JsonPropertyName("doctor")]
-    public DoctorDto? Doctor { get; set; }
+    [JsonPropertyName("userId")]
+    public int UserId { get; set; }
 }

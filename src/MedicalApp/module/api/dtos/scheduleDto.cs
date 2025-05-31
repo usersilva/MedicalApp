@@ -18,7 +18,4 @@ public record ScheduleDto
 
     [JsonPropertyName("isAvailable")]
     public bool IsAvailable { get; set; }
-
-    [JsonPropertyName("doctor")]
-    public DoctorDto? Doctor { get; set; }
 }

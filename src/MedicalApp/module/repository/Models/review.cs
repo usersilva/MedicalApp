@@ -2,13 +2,12 @@ namespace MedicalApp.module.repository.Models;
 
 public class Review
 {
-    public int Id;
-    public int PatientId;
-    public int DoctorId;
-    public string Comment = null!;
-    public int Rating;
-    public DateTime CreatedAt;
-
-    public User? Patient;
-    public Doctor? Doctor;
+    public int Id { get; set; }
+    public int PatientId { get; set; }
+    public User Patient { get; set; } = null!;
+    public int DoctorId { get; set; }
+    public Doctor Doctor { get; set; } = null!;
+    public string? Comment { get; set; }
+    public int Rating { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

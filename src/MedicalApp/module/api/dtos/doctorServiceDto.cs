@@ -9,10 +9,4 @@ public record DoctorServiceDto
 
     [JsonPropertyName("serviceId")]
     public int ServiceId { get; set; }
-
-    [JsonPropertyName("doctor")]
-    public DoctorDto? Doctor { get; set; }
-
-    [JsonPropertyName("service")]
-    public ServiceDto? Service { get; set; }
 }

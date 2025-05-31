@@ -20,8 +20,8 @@ public class SpecialityResolver
     {
         if (specialityDto == null || string.IsNullOrWhiteSpace(specialityDto.Name))
         {
-            _logger.LogWarning("Specialty name is null or empty, using default value.");
-            return 0;
+            _logger.LogWarning("Specialty name is null or empty, using default value (1).");
+            return 1;
         }
 
         var speciality = await _specialityRepository.GetByNameAsync(specialityDto.Name);
@@ -30,6 +30,7 @@ public class SpecialityResolver
             _logger.LogInformation("Specialty {Name} not found, creating new.", specialityDto.Name);
             speciality = new Speciality { Name = specialityDto.Name };
             await _specialityRepository.AddAsync(speciality);
+            await _specialityRepository.SaveChangesAsync();
         }
         return speciality.Id;
     }

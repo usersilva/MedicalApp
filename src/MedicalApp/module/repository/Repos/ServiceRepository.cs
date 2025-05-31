@@ -13,6 +13,27 @@ internal class ServiceRepository : RepositoryBase<Service>, IServiceRepository
 
     public async Task<List<Service>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        return await _context.Set<Service>().ToListAsync();
     }
+
+    public async Task<Service> AddAsync(Service service)
+    {
+        await _context.Set<Service>().AddAsync(service);
+        await _context.SaveChangesAsync();
+        return service;
+    }
+
+    public async Task<bool> ExistsByNameAsync(string name)
+    {
+        return await _context.Set<Service>()
+            .AnyAsync(s => s.Name.ToLower() == name.ToLower());
+    }
+
+    public async Task<List<Service>> FindByNameAsync(string name)
+    {
+        return await _context.Set<Service>()
+            .Where(s => s.Name.ToLower().Contains(name.ToLower()))
+            .ToListAsync();
+    }
+
 }

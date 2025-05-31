@@ -5,15 +5,20 @@ namespace MedicalApp.module.api.dtos;
 public record MedicalRecordDto
 {
     [JsonPropertyName("id")]
-    public int Id { get; init; }
+    public int Id { get; set; }
+
     [JsonPropertyName("userId")]
-    public int UserId { get; init; }
+    public int UserId { get; set; }
+
     [JsonPropertyName("chronicDiseases")]
-    public string ChronicDiseases { get; init; }
+    public string? ChronicDiseases { get; set; }
+
     [JsonPropertyName("currentCondition")]
-    public string CurrentCondition { get; init; }
+    public string? CurrentCondition { get; set; }
+
     [JsonPropertyName("recommendations")]
-    public string Recommendations { get; init; }
+    public string? Recommendations { get; set; }
+
     [JsonPropertyName("lastUpdated")]
-    public DateTime LastUpdated { get; init; }
+    public DateTime? LastUpdated { get; set; }
 }

@@ -46,6 +46,10 @@ public static class DependencyInjection
         services.AddScoped<AddSpeciality>();
         services.AddScoped<SpecialityResolver>();
         services.AddScoped<UpdateMedicalRecord>();
+        services.AddScoped<AddService>();
+        services.AddScoped<SearchServicesByName>();
+        services.AddScoped<GetAllServices>();
+        services.AddScoped<GetServiceById>();
 
         services.AddAutoMapper(typeof(DependencyInjection)); 
 

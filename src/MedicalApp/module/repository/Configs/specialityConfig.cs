@@ -15,8 +15,8 @@ public class SpecialityConfig : IEntityTypeConfiguration<Speciality>
             .HasMaxLength(100);
 
         builder.HasMany(s => s.Doctors)
-            .WithOne(d => d.Specialty)
+            .WithOne(d => d.Speciality)
             .HasForeignKey(d => d.SpecialityId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

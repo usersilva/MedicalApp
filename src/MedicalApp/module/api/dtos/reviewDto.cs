@@ -21,10 +21,4 @@ public record ReviewDto
 
     [JsonPropertyName("createdAt")]
     public DateTime CreatedAt { get; set; }
-
-    [JsonPropertyName("patient")]
-    public UserDto? Patient { get; set; }
-
-    [JsonPropertyName("doctor")]
-    public DoctorDto? Doctor { get; set; }
 }

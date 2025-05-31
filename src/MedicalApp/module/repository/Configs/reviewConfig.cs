@@ -9,20 +9,24 @@ internal class ReviewConfig : IEntityTypeConfiguration<Review>
     public void Configure(EntityTypeBuilder<Review> builder)
     {
         builder.HasKey(r => r.Id);
-        builder.Property(r => r.PatientId).IsRequired();
-        builder.Property(r => r.DoctorId).IsRequired();
-        builder.Property(r => r.Comment).IsRequired().HasMaxLength(500);
-        builder.Property(r => r.Rating).IsRequired();
-        builder.Property(r => r.CreatedAt).IsRequired();
+
+        builder.Property(r => r.Comment)
+            .HasMaxLength(500);
+
+        builder.Property(r => r.Rating)
+            .IsRequired();
+
+        builder.Property(r => r.CreatedAt)
+            .IsRequired();
 
         builder.HasOne(r => r.Patient)
-               .WithMany()
-               .HasForeignKey(r => r.PatientId)
-               .OnDelete(DeleteBehavior.Cascade);
+            .WithMany()
+            .HasForeignKey(r => r.PatientId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(r => r.Doctor)
-               .WithMany()
-               .HasForeignKey(r => r.DoctorId)
-               .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(d => d.Reviews)
+            .HasForeignKey(r => r.DoctorId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

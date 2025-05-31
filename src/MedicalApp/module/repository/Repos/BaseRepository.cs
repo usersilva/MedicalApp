@@ -15,7 +15,7 @@ internal class RepositoryBase<T> : IRepository<T> where T : class
         _context = context;
         _dbSet = context.Set<T>();
     }
-
+    public MedicalAppContext Context => _context;
     public virtual async Task<T?> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);

@@ -23,15 +23,15 @@ internal class AppointmentConfig : IEntityTypeConfiguration<Appointment>
                      .IsRequired()
                      .HasMaxLength(50)
                      .HasDefaultValue("Pending");
-                     
+
               builder.HasOne(a => a.User)
                      .WithMany(u => u.Appointments)
                      .HasForeignKey(a => a.UserId)
-                     .OnDelete(DeleteBehavior.Restrict);
+                     .OnDelete(DeleteBehavior.Cascade);
 
               builder.HasOne(a => a.Doctor)
                      .WithMany(d => d.Appointments)
                      .HasForeignKey(a => a.DoctorId)
-                     .OnDelete(DeleteBehavior.Restrict);
+                     .OnDelete(DeleteBehavior.Cascade);
        }
 }
