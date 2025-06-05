@@ -40,7 +40,7 @@ public class LoginPatient
         }
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
         var role = user.Role ?? "Patient";
         var claims = new[]
         {

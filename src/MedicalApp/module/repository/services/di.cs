@@ -50,12 +50,16 @@ public static class DependencyInjection
         services.AddScoped<SearchServicesByName>();
         services.AddScoped<GetAllServices>();
         services.AddScoped<GetServiceById>();
+        services.AddScoped<GetAllDoctors>();
 
-        services.AddAutoMapper(typeof(DependencyInjection)); 
+        services.AddAutoMapper(typeof(DependencyInjection));
 
-        var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+        //var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -65,10 +69,10 @@ public static class DependencyInjection
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
                 };
             });
-
+            
         services.AddLocalization(options => options.ResourcesPath = "src/MedicalApp/Resources");
 
         services.Configure<RequestLocalizationOptions>(options =>

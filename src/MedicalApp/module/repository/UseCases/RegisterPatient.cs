@@ -21,6 +21,10 @@ public class RegisterPatient
         _medicalRecordRepository = medicalRecordRepository;
         _localizer = localizer;
     }
+    public async Task<bool> IsEmailExists(string email)
+    {
+        return await _userRepository.GetByEmailAsync(email) != null;
+    }
 
     public async Task<UserDto> ExecuteAsync(UserDto userDto)
     {

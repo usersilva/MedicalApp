@@ -27,6 +27,7 @@ public class AdminController : ControllerBase
     private readonly GetAllServices _getAllServices;
     private readonly SearchServicesByName _searchServicesByName;
     private readonly GetServiceById _getServiceById;
+    private readonly GetAllDoctors _getAllDoctors;
 
     public AdminController(AddDoctor addDoctor, GenerateReport generateReport,
                             AddSchedule addSchedule, LoginPatient loginAdmin,
@@ -38,7 +39,8 @@ public class AdminController : ControllerBase
                             AddService addService,
                             GetAllServices getAllServices,
                             SearchServicesByName searchServicesByName,
-                            GetServiceById getServiceById)
+                            GetServiceById getServiceById,
+                            GetAllDoctors getAllDoctors)
     {
         _addDoctor = addDoctor;
         _generateReport = generateReport;
@@ -53,6 +55,7 @@ public class AdminController : ControllerBase
         _getAllServices = getAllServices;
         _searchServicesByName = searchServicesByName;
         _getServiceById = getServiceById;
+        _getAllDoctors = getAllDoctors;
     }
 
     [HttpPost("add-service")]
@@ -207,7 +210,7 @@ public class AdminController : ControllerBase
         {
             var (token, user) = await _loginAdmin.ExecuteAsync(request.Email, request.Password);
             Response.Headers["Authorization"] = $"Bearer {token}";
-            return Ok(new { message = _localizer["LoginSuccessful"].Value, User = user });
+            return Ok(new { message = _localizer["LoginSuccessful"].Value, User = user, token = token});
         }
         catch (ArgumentException ex)
         {
@@ -238,6 +241,20 @@ public class AdminController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
+        }
+    }
+
+    [HttpGet("doctors")]
+    public async Task<IActionResult> GetAllDoctors()
+    {
+        try
+        {
+            var doctors = await _getAllDoctors.ExecuteAsync();
+            return Ok(doctors);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 }

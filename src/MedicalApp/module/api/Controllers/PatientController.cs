@@ -24,6 +24,9 @@ public class PatientController : ControllerBase
     private readonly GetAllServices _getAllServices;
     private readonly SearchServicesByName _searchServicesByName;
     private readonly GetServiceById _getServiceById;
+    private readonly GetAllSpecialities _getAllSpecialities;
+    private readonly GetAllDoctors _getAllDoctors;
+
 
     public PatientController(LoginPatient loginPatient, ViewMedicalRecord viewMedicalRecord,
                               ViewAppointments viewAppointments, BookAppointment bookAppointment,
@@ -31,7 +34,9 @@ public class PatientController : ControllerBase
                               IStringLocalizer<SharedResources> localizer,
                               GetAllServices getAllServices,
                               SearchServicesByName searchServicesByName,
-                              GetServiceById getServiceById)
+                              GetServiceById getServiceById,
+                              GetAllSpecialities getAllSpecialities,
+                              GetAllDoctors getAllDoctors)
     {
         _loginPatient = loginPatient;
         _viewMedicalRecord = viewMedicalRecord;
@@ -44,17 +49,19 @@ public class PatientController : ControllerBase
         _searchServicesByName = searchServicesByName;
         _getServiceById = getServiceById;
         _localizer = localizer;
+        _getAllSpecialities = getAllSpecialities;
+        _getAllDoctors = getAllDoctors;
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
         try
         {
             var (token, user) = await _loginPatient.ExecuteAsync(request.Email, request.Password);
             Response.Headers["Authorization"] = $"Bearer {token}";
-            return Ok(new { message = _localizer["LoginSuccessful"].Value, User = user });
+            return Ok(new { message = _localizer["LoginSuccessful"].Value, User = user, token = token});
         }
         catch (ArgumentException ex)
         {
@@ -171,6 +178,7 @@ public class PatientController : ControllerBase
             return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
         }
     }
+
     [HttpGet("services")]
     public async Task<IActionResult> GetAllServices()
     {
@@ -184,6 +192,21 @@ public class PatientController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+
+    [HttpGet("doctors")]
+    public async Task<IActionResult> GetAllDoctors()
+    {
+        try
+        {
+            var doctors = await _getAllDoctors.ExecuteAsync();
+            return Ok(doctors);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpGet("search-services")]
     public async Task<IActionResult> SearchServices([FromQuery] string name)
     {
@@ -212,6 +235,20 @@ public class PatientController : ControllerBase
         catch (Exception ex)
         {
             return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("specialities")]
+    public async Task<IActionResult> GetAllSpecialities()
+    {
+        try
+        {
+            var specialities = await _getAllSpecialities.ExecuteAsync();
+            return Ok(specialities);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = _localizer["InternalError"].Value, details = ex.Message });
         }
     }
 }
