@@ -6,8 +6,12 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Speciality from './pages/Speciality';
-import Service from './pages/Service';
+import Specialities from './pages/Specialities';
+import Service from './pages/Services';
 import AdminPanel from './pages/AdminPanel';
+import Doctors from './pages/Doctors';
+import Doctor from './pages/Doctor';
+import Services from './pages/Services';
 
 function App() {
   return (
@@ -20,8 +24,12 @@ function App() {
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/speciality/:id" element={<Speciality />} />
+          <Route path="/speciality/:name" element={<Speciality />} />
+          <Route path="/specialities" element={<Specialities />} />
+          <Route path="/doctors" element={<Doctors />} />
+          <Route path="/doctor/:id" element={<Doctor />} />
           <Route path="/service/:id" element={<Service />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/admin/add-doctor" element={<div>Добавить врача (в разработке)</div>} />
             <Route path="/admin/add-speciality" element={<div>Добавить специальность (в разработке)</div>} />
             <Route path="/admin/add-service" element={<div>Добавить услугу (в разработке)</div>} />

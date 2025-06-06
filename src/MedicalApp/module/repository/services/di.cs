@@ -51,6 +51,7 @@ public static class DependencyInjection
         services.AddScoped<GetAllServices>();
         services.AddScoped<GetServiceById>();
         services.AddScoped<GetAllDoctors>();
+        services.AddScoped<GetDoctorById>();
 
         services.AddAutoMapper(typeof(DependencyInjection));
 

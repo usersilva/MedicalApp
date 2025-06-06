@@ -22,11 +22,41 @@ export const register = (name, lastName, email, password, role = 'patient') =>
 export const getDoctors = (query, filter) =>
     axios.create({ baseURL: 'http://localhost:5097/api/guest' }).get('/doctors', { params: { query, filter } });
 
+export const getDoctorById = async (id) => {
+  try {
+    console.log(`Запрос врача с ID: ${id}`); // Логируем запрос
+    const response = await axios
+      .create({ baseURL: 'http://localhost:5097/api/guest' })
+      .get(`/doctors/${id}`);
+    console.log('Полный ответ сервера:', response); // Логируем полный ответ
+    console.log('Данные из ответа:', response.data); // Логируем данные
+
+    // Проверяем, что данные не пустые
+    if (!response.data || (typeof response.data === 'object' && Object.keys(response.data).length === 0)) {
+      throw new Error('Данные врача не получены от сервера');
+    }
+
+    return response.data; // Возвращаем просто объект, без обёртки
+  } catch (error) {
+    console.error('Ошибка при получении врача по ID:', error);
+    throw new Error(error.response?.data?.message || 'Не удалось загрузить данные врача');
+  }
+};
+
 export const getSpecialities = () =>
     axios.create({ baseURL: 'http://localhost:5097/api/guest' }).get('/specialities');
 
 export const getServices = (query) =>
     axios.create({ baseURL: 'http://localhost:5097/api/guest' }).get('/services', { params: { query } });
+
+export const searchDoctors = (query) =>
+  axios.create({ baseURL: 'http://localhost:5097/api/guest' }).get('/search-doctors', { params: { query } });
+
+export const filterDoctors = (specialty) =>
+  axios.create({ baseURL: 'http://localhost:5097/api/guest' }).get('/filter-doctors', { params: { specialty } });
+
+export const searchServices = (name) =>
+  axios.create({ baseURL: 'http://localhost:5097/api/guest' }).get('/search-services', { params: { name } });
 
 export const login = async (email, password) => {
     let response;

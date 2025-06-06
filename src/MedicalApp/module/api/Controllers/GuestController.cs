@@ -25,6 +25,7 @@ public class GuestController : ControllerBase
     private readonly GetAllSpecialities _getAllSpecialities;
     private readonly IStringLocalizer<SharedResources> _localizer;
     private readonly GetAllDoctors _getAllDoctors;
+    private readonly GetDoctorById _getDoctorById;
     private readonly IConfiguration _configuration;
 
     private static readonly Dictionary<string, (string Code, UserDto UserDto, DateTime Timestamp)> _verificationCodes = new();
@@ -39,6 +40,7 @@ public class GuestController : ControllerBase
         GetServiceById getServiceById,
         GetAllSpecialities getAllSpecialities,
         GetAllDoctors getAllDoctors,
+        GetDoctorById getDoctorById,
         IStringLocalizer<SharedResources> localizer,
         IConfiguration configuration)
     {
@@ -51,6 +53,7 @@ public class GuestController : ControllerBase
         _getAllSpecialities = getAllSpecialities;
         _localizer = localizer;
         _getAllDoctors = getAllDoctors;
+        _getDoctorById = getDoctorById;
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
@@ -223,6 +226,21 @@ public class GuestController : ControllerBase
             var service = await _getServiceById.ExecuteAsync(id);
             if (service == null) return NotFound(new { message = "Service not found." });
             return Ok(service);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("doctors/{id}")]
+    public async Task<IActionResult> GetDoctor(int id)
+    {
+        try
+        {
+            var doctor = await _getDoctorById.ExecuteAsync(id);
+            if (doctor == null) return NotFound(new { message = "Doctor not found." });
+            return Ok(doctor);
         }
         catch (Exception ex)
         {
